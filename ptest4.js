@@ -148,10 +148,22 @@ function initTempoSurvey() {
   toggleOtherCheckbox("q3OtherCheck", "q3OtherBox");
   toggleOtherRadio("q4", "q4OtherRadio", "q4OtherBox");
 
-  t.addEventListener("click", function(){ g = 2; showPage(); });
-  i.addEventListener("click", function(){ if(g > 2){ g--; showPage(); } });
+  t.addEventListener("click", function(evt){ 
+    evt.preventDefault();
+    g = 2; 
+    showPage(); 
+  });
+  
+  i.addEventListener("click", function(evt){ 
+    evt.preventDefault();
+    if(g > 2){ 
+      g--; 
+      showPage(); 
+    } 
+  });
 
-  s.addEventListener("click", function(){
+  s.addEventListener("click", function(evt){
+    evt.preventDefault();
     if(!validatePage(g)) return;
     if(g !== 6){ 
       g++; 
@@ -161,7 +173,8 @@ function initTempoSurvey() {
     }
   });
 
-  e.addEventListener("click", function(){
+  e.addEventListener("click", function(evt){
+    evt.preventDefault();
     try{
       if(typeof weNotification !== "undefined"){
         if(typeof weNotification.dismiss === "function") weNotification.dismiss();

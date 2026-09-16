@@ -1,4 +1,4 @@
-<script>
+
 function initTempoSurvey() {
   var g=1,
   r=document.getElementById("tempoSurvey"),
@@ -196,4 +196,4 @@ if (document.readyState === "loading") {
 } else {
   initTempoSurvey();
 }
-</script>
+

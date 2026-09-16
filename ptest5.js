@@ -144,37 +144,47 @@ function initTempoSurvey() {
     showPage();
   }
 
+  // Helper function to safely bind click events without link redirection
+  function bindLinkClick(element, handler) {
+    if(!element) return;
+    element.addEventListener("click", function(evt) {
+      if(evt) {
+        evt.preventDefault();
+        evt.stopPropagation();
+        if (evt.stopImmediatePropagation) evt.stopImmediatePropagation();
+      }
+      handler(evt);
+      return false;
+    }, false);
+  }
+
   toggleOtherCheckbox("q2OtherCheck", "q2OtherBox");
   toggleOtherCheckbox("q3OtherCheck", "q3OtherBox");
   toggleOtherRadio("q4", "q4OtherRadio", "q4OtherBox");
 
-  t.addEventListener("click", function(evt){ 
-    evt.preventDefault();
-    g = 2; 
-    showPage(); 
-  });
-  
-  i.addEventListener("click", function(evt){ 
-    evt.preventDefault();
-    if(g > 2){ 
-      g--; 
-      showPage(); 
-    } 
+  bindLinkClick(t, function() {
+    g = 2;
+    showPage();
   });
 
-  s.addEventListener("click", function(evt){
-    evt.preventDefault();
-    if(!validatePage(g)) return;
-    if(g !== 6){ 
-      g++; 
-      showPage(); 
-    } else { 
-      submitSurvey(); 
+  bindLinkClick(i, function() {
+    if(g > 2){
+      g--;
+      showPage();
     }
   });
 
-  e.addEventListener("click", function(evt){
-    evt.preventDefault();
+  bindLinkClick(s, function() {
+    if(!validatePage(g)) return;
+    if(g !== 6){
+      g++;
+      showPage();
+    } else {
+      submitSurvey();
+    }
+  });
+
+  bindLinkClick(e, function() {
     try{
       if(typeof weNotification !== "undefined"){
         if(typeof weNotification.dismiss === "function") weNotification.dismiss();

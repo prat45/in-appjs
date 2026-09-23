@@ -216,3 +216,51 @@
       transition: transform .18s;
     }
     .cta:active { transform: translateY(2px); box-shadow: 0 3px 0 var(--blue-dark); }
+
+/* Force high z-index & override any stamp4.css hidden properties */
+    #stampTriggerWidget {
+      cursor: pointer !important;
+      user-select: none !important;
+      -webkit-tap-highlight-color: transparent !important;
+      z-index: 999999 !important;
+    }
+
+    /* Override external stylesheet rules on #page2 and .modal-center */
+    #page2 {
+      display: none !important;
+      position: fixed !important;
+      top: 0 !important;
+      left: 0 !important;
+      width: 100vw !important;
+      height: 100vh !important;
+      background: rgba(0, 0, 0, 0.65) !important;
+      z-index: 1000000 !important;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+    }
+
+    #page2.show-page {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      opacity: 1 !important;
+      visibility: visible !important;
+      pointer-events: auto !important;
+    }
+
+    #page2 .modal-center {
+      display: block !important;
+      opacity: 1 !important;
+      visibility: visible !important;
+      transform: none !important;
+      max-height: 90vh !important;
+      overflow-y: auto !important;
+      width: min(400px, 90vw) !important;
+    }
+
+    .card-close-btn {
+      cursor: pointer !important;
+      z-index: 1000001 !important;
+    }

@@ -1,18 +1,25 @@
+ :root {
+      --sky-1:#8FD2FF; --sky-2:#C9E9FF; --sky-3:#EAF6FF;
+      --blue:#1B4FCB; --blue-dark:#123A9E; --blue-mid:#2E6FE8; --blue-pale:#EAF2FF;
+      --gold:#FFC52E; --green:#19B45C; --green-dark:#0E8B45; --green-pale:#EAFBF1; --ink:#0E2C6B;
+    }
 
-    /* Floating Widget: Positioned directly without an overlay wrapper */
+    /* Screen 1: Trigger Widget */
     #stampTriggerWidget {
       position: fixed;
       bottom: 24px;
       right: 18px;
-      z-index: 999999;
-      cursor: pointer;
-      display: flex;
+      z-index: 999999 !important;
+      cursor: pointer !important;
+      display: flex !important;
       flex-direction: column;
       align-items: center;
-      touch-action: manipulation;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
     }
+
     #stampTriggerWidget * {
-      pointer-events: none; /* Prevents inner elements from swallowing click/touch */
+      pointer-events: none;
     }
 
     .stamp-widget-circle {
@@ -26,11 +33,13 @@
       box-shadow: 0 4px 18px rgba(0, 177, 79, 0.45);
       border: 3px solid #fff;
     }
+
     .stamp-widget-circle img {
       width: 85%;
       height: 85%;
       object-fit: contain;
     }
+
     .stamp-widget-label {
       margin-top: -14px;
       background: #00E676;
@@ -47,31 +56,32 @@
       line-height: 1.1;
     }
 
-    /* Modal Screen 2 */
+    /* Screen 2: Modal Base */
     #page2 {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.65);
-      z-index: 1000000;
-      overflow-y: auto;
+      display: none !important;
+      position: fixed !important;
+      top: 0 !important;
+      left: 0 !important;
+      width: 100vw !important;
+      height: 100vh !important;
+      background: rgba(0, 0, 0, 0.65) !important;
+      z-index: 1000000 !important;
+      box-sizing: border-box;
       padding: 16px;
     }
 
+    /* Active class toggled by JS */
+    #page2.show-page {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+    }
+
     .modal-center {
-      min-height: 100%;
+      width: 100%;
       display: flex;
       align-items: center;
       justify-content: center;
-    }
-
-    :root {
-      --sky-1:#8FD2FF; --sky-2:#C9E9FF; --sky-3:#EAF6FF;
-      --blue:#1B4FCB; --blue-dark:#123A9E; --blue-mid:#2E6FE8; --blue-pale:#EAF2FF;
-      --gold:#FFC52E; --green:#19B45C; --green-dark:#0E8B45; --green-pale:#EAFBF1; --ink:#0E2C6B;
     }
 
     .card {
@@ -81,6 +91,8 @@
       background: radial-gradient(120% 60% at 50% 0,#fff 0,rgba(255,255,255,0) 55%), linear-gradient(180deg,var(--sky-1) 0,var(--sky-2) 45%,var(--sky-3) 100%);
       box-shadow: 0 18px 45px rgba(11,49,116,.28);
       position: relative;
+      max-height: 90vh;
+      overflow-y: auto;
     }
 
     .card-close-btn {
@@ -95,7 +107,7 @@
       font-size: 18px;
       font-weight: bold;
       color: var(--blue-dark);
-      cursor: pointer;
+      cursor: pointer !important;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -216,51 +228,3 @@
       transition: transform .18s;
     }
     .cta:active { transform: translateY(2px); box-shadow: 0 3px 0 var(--blue-dark); }
-
-/* Force high z-index & override any stamp4.css hidden properties */
-    #stampTriggerWidget {
-      cursor: pointer !important;
-      user-select: none !important;
-      -webkit-tap-highlight-color: transparent !important;
-      z-index: 999999 !important;
-    }
-
-    /* Override external stylesheet rules on #page2 and .modal-center */
-    #page2 {
-      display: none !important;
-      position: fixed !important;
-      top: 0 !important;
-      left: 0 !important;
-      width: 100vw !important;
-      height: 100vh !important;
-      background: rgba(0, 0, 0, 0.65) !important;
-      z-index: 1000000 !important;
-      opacity: 0;
-      visibility: hidden;
-      pointer-events: none;
-      transition: opacity 0.2s ease;
-    }
-
-    #page2.show-page {
-      display: flex !important;
-      align-items: center !important;
-      justify-content: center !important;
-      opacity: 1 !important;
-      visibility: visible !important;
-      pointer-events: auto !important;
-    }
-
-    #page2 .modal-center {
-      display: block !important;
-      opacity: 1 !important;
-      visibility: visible !important;
-      transform: none !important;
-      max-height: 90vh !important;
-      overflow-y: auto !important;
-      width: min(400px, 90vw) !important;
-    }
-
-    .card-close-btn {
-      cursor: pointer !important;
-      z-index: 1000001 !important;
-    }

@@ -1,35 +1,23 @@
-* { box-sizing: border-box; margin: 0; padding: 0; }
-    body, html { width: 100%; height: 100%; font-family: 'Poppins', sans-serif; background: transparent; }
 
-    /* Page 1: Floating Widget Container */
-    #page1 {
-      display: block;
-      width: 100%;
-      height: 100%;
+    /* Floating Widget: Positioned directly without an overlay wrapper */
+    #stampTriggerWidget {
       position: fixed;
-      top: 0;
-      left: 0;
-      pointer-events: none; /* Allows click-through outside the badge */
-      z-index: 99999;
-    }
-
-    .stamp-widget-trigger {
-      position: absolute;
-      bottom: 30px;
-      right: 20px;
-      pointer-events: auto; /* Enables click on the badge */
+      bottom: 24px;
+      right: 18px;
+      z-index: 999999;
       cursor: pointer;
       display: flex;
       flex-direction: column;
       align-items: center;
-      transition: transform 0.2s ease;
+      touch-action: manipulation;
     }
-    .stamp-widget-trigger:active {
-      transform: scale(0.95);
+    #stampTriggerWidget * {
+      pointer-events: none; /* Prevents inner elements from swallowing click/touch */
     }
+
     .stamp-widget-circle {
-      width: 110px;
-      height: 110px;
+      width: 105px;
+      height: 105px;
       border-radius: 50%;
       background: radial-gradient(circle, #2CE574 0%, #00B14F 100%);
       display: flex;
@@ -57,10 +45,9 @@
       box-shadow: 0 2px 6px rgba(0,0,0,0.2);
       text-align: center;
       line-height: 1.1;
-      z-index: 2;
     }
 
-    /* Page 2: Stamp Collection Card Modal Overlay */
+    /* Modal Screen 2 */
     #page2 {
       display: none;
       position: fixed;
@@ -68,8 +55,8 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0, 0, 0, 0.55);
-      z-index: 100000;
+      background: rgba(0, 0, 0, 0.65);
+      z-index: 1000000;
       overflow-y: auto;
       padding: 16px;
     }
@@ -103,9 +90,9 @@
       background: #fff;
       border: none;
       border-radius: 50%;
-      width: 26px;
-      height: 26px;
-      font-size: 16px;
+      width: 28px;
+      height: 28px;
+      font-size: 18px;
       font-weight: bold;
       color: var(--blue-dark);
       cursor: pointer;
@@ -135,7 +122,6 @@
       background: linear-gradient(180deg,var(--blue-mid),var(--blue));
       box-shadow: 0 5px 0 var(--blue-dark);
       text-align: center;
-      position: relative;
     }
     .goal .label { color: #eaf2ff; font-size: 12px; font-weight: 600; margin-bottom: 2px; }
     .goal .amount {
@@ -178,8 +164,6 @@
     .stamp .name { font-size: 10px; font-weight: 700; padding: 5px 2px; color: var(--blue); background: var(--blue-pale); }
     .stamp.collected .name { color: var(--green-dark); background: var(--green-pale); }
     .stamp .art { height: 60px; overflow: hidden; display: flex; align-items: center; justify-content: center; }
-    
-    /* Silhouette effect for uncollected items */
     .stamp .art img {
       width: 75%;
       height: 75%;
@@ -187,7 +171,6 @@
       filter: brightness(0);
       opacity: 0.85;
     }
-    /* Full color for collected items */
     .stamp.collected .art img {
       filter: none;
       opacity: 1;

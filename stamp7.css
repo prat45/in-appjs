@@ -1,0 +1,320 @@
+
+:root {
+  --sky-1: #8FD2FF;
+  --sky-2: #C9E9FF;
+  --sky-3: #EAF6FF;
+  --blue: #1B4FCB;
+  --blue-dark: #123A9E;
+  --blue-mid: #2E6FE8;
+  --blue-pale: #EAF2FF;
+  --gold: #FFC52E;
+  --gold-dark: #E08A00;
+  --green: #19B45C;
+  --green-dark: #0E8B45;
+  --green-pale: #EAFBF1;
+  --ink: #0E2C6B;
+  --muted: #6B84A8;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Floating Widget Style */
+.widget-trigger {
+  position: fixed;
+  bottom: 20px;
+  right: 15px;
+  z-index: 9999;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  user-select: none;
+}
+
+.widget-bubble {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #25c069 0%, #19b45c 60%, #0e8b45 100%);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.25), 0 0 0 3px rgba(255,255,255,0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+}
+
+.widget-bubble img {
+  width: 90%;
+  height: 90%;
+  object-fit: contain;
+}
+
+.widget-badge {
+  margin-top: -10px;
+  background: #25d366;
+  border: 2px solid #fff;
+  border-radius: 12px;
+  padding: 3px 8px;
+  font-family: 'Baloo 2', cursive;
+  font-size: 10px;
+  font-weight: 800;
+  color: #000;
+  text-align: center;
+  line-height: 1.1;
+  text-transform: uppercase;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+/* Container Modal */
+.card {
+  border-radius: 26px;
+  padding: 20px 16px 22px;
+  background: radial-gradient(120% 60% at 50% 0,#fff 0,rgba(255,255,255,0) 55%),linear-gradient(180deg,var(--sky-1) 0,var(--sky-2) 45%,var(--sky-3) 100%);
+  box-shadow: 0 18px 45px rgba(11,49,116,.28);
+  position: relative;
+  overflow: hidden;
+  max-width: 360px;
+  margin: 10px auto;
+  box-sizing: border-box;
+}
+
+.title {
+  font-family: "Baloo 2", cursive;
+  text-align: center;
+  line-height: 1.15;
+  color: #fff;
+  -webkit-text-stroke: 2px var(--blue);
+  paint-order: stroke fill;
+  text-shadow: 0 3px var(--blue-dark);
+  font-size: 22px;
+  font-weight: 800;
+  margin: 0 0 10px 0;
+  letter-spacing: .3px;
+}
+
+.goal {
+  margin: 10px 0 14px;
+  border-radius: 18px;
+  padding: 12px 16px;
+  background: linear-gradient(180deg, var(--blue-mid), var(--blue));
+  box-shadow: 0 5px 0 var(--blue-dark);
+  text-align: center;
+  position: relative;
+}
+
+.goal .label {
+  color: #eaf2ff;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.goal .amount {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-family: "Baloo 2", cursive;
+  font-size: 28px;
+  font-weight: 800;
+  color: #fff;
+  line-height: 1;
+  margin-top: 2px;
+}
+
+.goal .amount .coin {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  font-size: 12px;
+  color: #8a5000;
+  font-weight: 800;
+  background: linear-gradient(180deg, #ffe9a8, #ffc52e);
+  display: grid;
+  place-items: center;
+  box-shadow: inset 0 2px rgba(255,255,255,.7);
+}
+
+.goal .track-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 6px;
+}
+
+.goal .fraction {
+  color: #eaf2ff;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.track {
+  height: 8px;
+  border-radius: 6px;
+  background: rgba(255,255,255,.28);
+  overflow: hidden;
+  margin-top: 6px;
+}
+
+.track .fill {
+  height: 100%;
+  border-radius: 6px;
+  background: linear-gradient(90deg, #3fe08a, var(--green));
+  width: 0%;
+  transition: width .4s ease;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.stamp {
+  border-radius: 12px;
+  overflow: hidden;
+  text-align: center;
+  background: #fff;
+  border: 2px solid var(--blue-pale);
+  box-shadow: 0 4px 10px rgba(11,49,116,.08);
+}
+
+.stamp.collected {
+  border-color: var(--green-pale);
+}
+
+.stamp .name {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 5px 2px;
+  color: var(--blue);
+  background: var(--blue-pale);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.stamp.collected .name {
+  color: var(--green-dark);
+  background: var(--green-pale);
+}
+
+.stamp .art {
+  height: 60px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+}
+
+.stamp .art img {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  filter: brightness(0);
+  opacity: .85;
+}
+
+.stamp.collected .art img {
+  filter: none;
+  opacity: 1;
+}
+
+.stamp .pts {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  font-size: 11px;
+  font-weight: 800;
+  color: #fff;
+  padding: 4px 2px;
+  background: linear-gradient(180deg, var(--blue-mid), var(--blue));
+}
+
+.stamp.collected .pts {
+  background: linear-gradient(180deg, #25c069, var(--green-dark));
+}
+
+.stamp .pts .coin {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  font-size: 8px;
+  color: #8a5000;
+  font-weight: 800;
+  background: linear-gradient(180deg, #ffe9a8, #ffc52e);
+  display: grid;
+  place-items: center;
+}
+
+.hint {
+  text-align: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 10px;
+}
+
+.btn-group {
+  display: flex;
+  gap: 8px;
+}
+
+.cta {
+  flex: 1;
+  border: 0;
+  cursor: pointer;
+  border-radius: 40px;
+  padding: 10px 6px;
+  font-family: "Baloo 2", cursive;
+  font-size: 16px;
+  font-weight: 800;
+  color: #fff;
+  background: linear-gradient(180deg, #3c7bf0, #1b4fcb);
+  box-shadow: 0 5px 0 var(--blue-dark);
+  transition: transform .18s;
+  text-transform: uppercase;
+}
+
+.cta:active {
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 var(--blue-dark);
+}
+
+/* Rules View Styling */
+.rules-card {
+  background: linear-gradient(180deg, #2e6fe8 0%, #1b4fcb 100%);
+  border-radius: 16px;
+  padding: 12px;
+  color: #fff;
+  margin-bottom: 10px;
+  box-shadow: inset 0 2px 4px rgba(255,255,255,0.3);
+}
+
+.rules-card-title {
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.rules-list {
+  padding-left: 18px;
+  margin: 0;
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+.rules-list li {
+  margin-bottom: 6px;
+}

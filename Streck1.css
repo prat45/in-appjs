@@ -1,0 +1,97 @@
+
+.close-button { z-index: 999; }
+.modal-content { margin-left:auto; margin-right:auto; width:98% !important; background-color:transparent !important; }
+
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+--bg:#0A0C12; --muted:#8A94A6; --ink:#0E2C6B; --blue:#2159CE; --gold:#FFC52E;
+}
+body{background:var(--bg); font-family:"Be Vietnam Pro",sans-serif; display:flex; justify-content:center; padding:20px 0}
+
+.screen{display:none}
+.screen.is-on{display:block}
+
+.card{width:min(380px,100%); background:var(--bg); border-radius:26px; padding:20px 18px 24px; position:relative; color:#fff}
+.closeX{
+position:absolute; top:14px; right:14px; width:28px; height:28px; border:0; border-radius:50%;
+background:rgba(255,255,255,.08); color:#fff; font-size:16px; line-height:1; cursor:pointer;
+display:grid; place-items:center;
+}
+.closeX:hover{background:rgba(255,255,255,.16)}
+
+/* ---------- Hero (flame + title + subtitle, one composite) ---------- */
+.hero{position:relative; text-align:center; padding:8px 10px 4px}
+.tagline{display:block; margin:0 auto; max-width:78%; height:auto}
+.sparkle{position:absolute; color:#5BE37C; font-size:14px}
+.sparkle.s1{top:2px; left:4px} .sparkle.s2{top:10px; right:-4px} .sparkle.s3{bottom:16px; left:-6px}
+
+/* ---------- Stats panel ---------- */
+.panel-wrap{position:relative; margin:14px 0}
+.panel-wrap .cake{position:absolute; top:-38px; right:14px; width:86px; height:86px; z-index:2}
+.panel{background:#fff; border-radius:20px; overflow:hidden; color:var(--ink)}
+.points-bar{
+background:linear-gradient(180deg,#3C7BF0,var(--blue)); color:#fff;
+padding:14px 76px 14px 16px; display:flex; align-items:center; justify-content:space-between; position:relative;
+}
+.points-bar .label-img{max-height:16px; max-width:55%; width:auto; height:auto}
+.points-bar .val{font-family:"Baloo 2",cursive; font-size:20px; font-weight:800; color:#0BFF85; display:flex; align-items:center; gap:6px}
+.points-bar .coin{width:20px; height:20px}
+.points-bar .unit{font-family:"Be Vietnam Pro",sans-serif; font-size:13px; font-weight:700}
+
+.stats{display:grid; grid-template-columns:1fr 1fr}
+.stat{padding:12px 8px; text-align:center}
+.stat:first-child{border-right:1px solid #EEF1F6}
+.stat .ico{height:14px; margin-bottom:5px}
+.stat .lbl-img{max-height:11px; max-width:100%; width:auto; height:auto; display:block; margin:0 auto 5px}
+.stat .val-img{max-height:16px; max-width:100%; width:auto; height:auto; display:block; margin:0 auto}
+
+/* day grid - each cell is a colored "head" (date/tag) over a body (icon + points) */
+.grid{display:grid; grid-template-columns:repeat(4,1fr); gap:8px; padding:12px}
+.day{border-radius:14px; text-align:center; overflow:hidden}
+.day .head{padding:6px 0 4px; font-size:10px; font-weight:700}
+.day .body{padding:9px 0 11px}
+.day .icon{width:28px; height:28px; margin:0 auto 4px}
+.day .pts{font-size:14px; font-weight:800}
+
+.day.missed .head{background:linear-gradient(180deg,#FFFFFF,#E3E6EA); color:#9AA3AD}
+.day.missed .body{background:#B0B4BA}
+.day.missed .pts{color:#F4F5F6}
+
+.day.claimed .head{background:linear-gradient(180deg,#EAFBF0,#C9F5D9); color:#17A85A}
+.day.claimed .body{background:#A7EBB9}
+.day.claimed .pts{color:#17A85A}
+
+.day.today{box-shadow:0 0 0 2px #4BD771 inset}
+.day.today .head{background:linear-gradient(180deg,#8FEBA9,#4BD771); color:#fff}
+.day.today .body{background:#fff}
+.day.today .pts{color:#20B750}
+
+.day.upcoming .head{background:linear-gradient(180deg,#FFF3D9,#ffffff); color:#FFAF00}
+.day.upcoming .body{background:#fff}
+.day.upcoming .pts{color:#FFAF00}
+
+.day.bonus img{width:100%; height:100%; display:block; object-fit:cover}
+
+.payout{display:flex; align-items:center; gap:6px; justify-content:center; background:#EAF4FF; padding:12px}
+.payout img{max-height:20px; max-width:100%; width:auto; height:auto}
+
+.cta-img-btn{width:100%; border:0; background:transparent; padding:0; cursor:pointer; margin-top:16px}
+.cta-img-btn img{width:100%; display:block}
+.cta-img-btn:disabled{cursor:default}
+.subtext{text-align:center; font-size:11px; color:var(--muted); margin-top:8px}
+
+/* ---------- Sheets (success / final) ---------- */
+.sheet{text-align:center; padding:30px 10px 6px}
+.sheet .heading-img{max-height:44px; max-width:100%; width:auto; height:auto; display:block; margin:0 auto 18px}
+.illus{position:relative; width:170px; height:170px; margin:0 auto 18px}
+.illus img{width:100%; height:100%; object-fit:contain}
+.sheet .lbl-img{max-height:16px; max-width:100%; width:auto; height:auto; display:block; margin:0 auto 6px}
+.sheet .amount{font-family:"Baloo 2",cursive; font-size:46px; font-weight:800; color:var(--gold); line-height:1}
+.sheet .msg-img{max-height:40px; max-width:100%; width:auto; height:auto; display:block; margin:14px auto 22px}
+
+@media (prefers-reduced-motion:no-preference){
+.day.today{animation:bob 2.2s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+.illus{animation:rise .5s ease}
+@keyframes rise{from{transform:scale(.7); opacity:0}to{transform:scale(1); opacity:1}}
+}

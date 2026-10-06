@@ -129,10 +129,10 @@
 
   /* Figma-exported art (see assets/) swapped in per day/CTA state. */
   var DAY_ICON_SRC = {
-    claimed: "assets/icon-claimed-seal.png",
-    today: "assets/icon-today.png",
-    missed: "assets/icon-missed.png",
-    upcoming: "assets/icon-upcoming.png"
+    claimed: "https://onsite-assets-editor.s3.amazonaws.com/images/we10a5cb699/icon-claimed-seal.png",
+    today: "https://onsite-assets-editor.s3.amazonaws.com/images/we10a5cb699/icon-upcoming.png",
+    missed: "https://onsite-assets-editor.s3.amazonaws.com/images/we10a5cb699/icon-missed.png",
+    upcoming: "https://onsite-assets-editor.s3.amazonaws.com/images/we10a5cb699/icon-upcoming.png"
   };
 
   var CTA_IMG_SRC = {

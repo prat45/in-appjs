@@ -27,14 +27,14 @@
     totalDays: 7,
     dailyPoints: 50,
     milestones: [
-      { day: 4, bonus: 200 },
-      { day: 7, bonus: 250 }
+    //  { day: 4, bonus: 200 },
+      { day: 7, bonus: 450 }
     ],
     /* 7 x 50 + 200 + 250 = 800 -> show the final screen at this total */
     finalRewardPoints: 800,
     eventName: "7-DAY STREAK",
     /* Full UTC instant on purpose - see parseFlexibleDate. */
-    defaultCycleStartDate: "2026-11-01T00:00:00.000Z"
+    defaultCycleStartDate: "2026-10-07T00:00:00.000Z"
   };
 
   var ATTR = {

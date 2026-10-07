@@ -12,11 +12,8 @@
      event_time, cycle_start_date, campaign_id, server_time,
      dailyPoints, streak, TotalPoints
 
-   Screen flow:
-     1. Main (grid)  --click "Điểm danh ngay"-->
-     2. Daily success (shows the user's updated TotalPoints)
-        OR
-     3. Final reward, when the updated TotalPoints reaches 800
+   Screen flow (2 screens):
+     1. Main (grid)  --click button-->  2. Daily success (shows TotalPoints)
    ========================================================= */
 
 (function () {
@@ -27,11 +24,11 @@
     totalDays: 7,
     dailyPoints: 50,
     milestones: [
-    //  { day: 4, bonus: 200 },
-      { day: 7, bonus: 450 }
+     // { day: 4, bonus: 200 },
+      { day: 7, bonus: 250 }
     ],
-    /* 7 x 50 + 200 + 250 = 800 -> show the final screen at this total */
-    finalRewardPoints: 800,
+    /* Label on the 8th (reward) block - fixed campaign payout date. */
+    payoutDateLabel: "14/10",
     eventName: "7-DAY STREAK",
     /* Full UTC instant on purpose - see parseFlexibleDate. */
     defaultCycleStartDate: "2026-10-07T00:00:00.000Z"
@@ -71,7 +68,7 @@
     missed: ASSET + "icon-missed.png",
     upcoming: ASSET + "icon-upcoming.png"
   };
-  var BONUS_CELL_SRC = ASSET + "GIFT%20BOX%20%281%29.png";
+  var BONUS_CELL_SRC = ASSET + "cell-bonus-day.png";
 
   /* The button is ALWAYS clickable:
        - check-in available  -> "Điểm danh ngay" (tracks event, then opens screen 2/3)
@@ -81,7 +78,7 @@
     viewPoints: "Xem điểm tích lũy"
   };
 
-  var SCREEN = { CHECKIN: "checkin", DAILY: "daily", FINAL: "final" };
+  var SCREEN = { CHECKIN: "checkin", DAILY: "daily" };
 
   var customData = window.WE_CUSTOM_DATA || {};
 
@@ -225,15 +222,9 @@
   var ctaBtnEl = $("ctaBtn");
   var screens = {
     checkin: $("screenCheckin"),
-    daily: $("screenDaily"),
-    final: $("screenFinal")
+    daily: $("screenDaily")
   };
   var dailyAmountEl = $("dailyAmount");
-  var finalAmountEl = $("finalAmount");
-
-  /* Stats row values come from CONFIG so they never drift from the logic. */
-  $("statDaily").textContent = CONFIG.dailyPoints;
-  $("statMax").textContent = CONFIG.finalRewardPoints;
 
 
   /* ================= RENDER ================= */
@@ -255,10 +246,15 @@
       gridEl.appendChild(el);
     }
 
-    /* 8th cell: baked "08/11 - Nhận thưởng" gift art (fixed campaign payout date). */
+    /* 8th block: reward day - same head/body structure as the other days. */
     var bonus = document.createElement("div");
     bonus.className = "day bonus";
-    bonus.innerHTML = '<img src="' + BONUS_CELL_SRC + '" alt="08/11 - Nhận thưởng">';
+    bonus.innerHTML =
+      '<div class="head">' + CONFIG.payoutDateLabel + '</div>' +
+      '<div class="body">' +
+        '<img class="gift" src="' + BONUS_CELL_SRC + '" alt="">' +
+        '<div class="bonus-lbl">Nhận thưởng</div>' +
+      '</div>';
     gridEl.appendChild(bonus);
 
     pointsValEl.textContent = totalPoints;
@@ -338,15 +334,10 @@
 
   /* ================= CHECK-IN ================= */
 
-  /* Opens screen 3 when the total has reached 800, otherwise screen 2. */
+  /* Always opens screen 2 with the user's total. */
   function showResult(fromPoints) {
-    if (totalPoints >= CONFIG.finalRewardPoints) {
-      show(SCREEN.FINAL);
-      countUp(finalAmountEl, fromPoints, totalPoints);
-    } else {
-      show(SCREEN.DAILY);
-      countUp(dailyAmountEl, fromPoints, totalPoints);
-    }
+    show(SCREEN.DAILY);
+    countUp(dailyAmountEl, fromPoints, totalPoints);
   }
 
   function onCtaClick() {
@@ -384,7 +375,7 @@
 
   ctaBtnEl.addEventListener("click", onCtaClick);
 
-  ["closeMain", "closeDaily", "closeFinal", "dailyCloseBtn", "finalCloseBtn"].forEach(function (id) {
+  ["closeMain", "closeDaily", "dailyCloseBtn"].forEach(function (id) {
     $(id).addEventListener("click", closeWidget);
   });
 

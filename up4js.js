@@ -71,7 +71,7 @@
     missed: ASSET + "icon-missed.png",
     upcoming: ASSET + "icon-upcoming.png"
   };
-  var BONUS_CELL_SRC = ASSET + "cell-bonus-day.png";
+  var BONUS_CELL_SRC = ASSET + "GIFT%20BOX%20%281%29.png";
 
   /* The button is ALWAYS clickable:
        - check-in available  -> "Điểm danh ngay" (tracks event, then opens screen 2/3)

@@ -1,10 +1,10 @@
 /* =========================================================
    DAILY CHECK-IN WIDGET (UNow "Giữ chuỗi bạn thân") - logic layer
 
-   WebEngage attribute/event contract is UNCHANGED from the previous
-   version, so the existing Journey Block keeps working:
+   WebEngage attribute/event contract is UNCHANGED, so the existing
+   Journey Block keeps working:
 
-     user.custom.xyz = { "camp_311olhm": {
+     user.custom.xyz = { "<CampaignId from index.html>": {
        TotalPoints, CycleStartDate, LastStreakDate, StreakCount, VisitedDays
      } }
 
@@ -13,7 +13,8 @@
      dailyPoints, streak, TotalPoints
 
    Screen flow (2 screens):
-     1. Main (grid)  --click button-->  2. Daily success (shows TotalPoints)
+     1. Main (grid)  --click button-->  2. Daily success (shows TotalPoints
+        + confetti)
    ========================================================= */
 
 (function () {
@@ -27,11 +28,10 @@
      // { day: 4, bonus: 200 },
       { day: 7, bonus: 250 }
     ],
-    /* Label on the 8th (reward) block - fixed campaign payout date. */
-    payoutDateLabel: "14/10",
     eventName: "7-DAY STREAK",
     /* Full UTC instant on purpose - see parseFlexibleDate. */
     defaultCycleStartDate: "2026-10-07T00:00:00.000Z"
+    /* Reward-day label (8th block) is calculated: cycle start + 7 days. */
   };
 
   var ATTR = {
@@ -68,11 +68,13 @@
     missed: ASSET + "icon-missed.png",
     upcoming: ASSET + "icon-upcoming.png"
   };
-  var BONUS_CELL_SRC = ASSET + "cell-bonus-day.png";
+
+  /* Gift box art on the 8th (reward) block. */
+  var BONUS_CELL_SRC = ASSET + "Gift%20box%20%282%29.png";
 
   /* The button is ALWAYS clickable:
-       - check-in available  -> "Điểm danh ngay" (tracks event, then opens screen 2/3)
-       - already checked in / cycle over -> "Xem điểm tích lũy" (opens screen 2/3, no event) */
+       - check-in available  -> "Điểm danh ngay" (tracks event, then opens screen 2)
+       - already checked in / cycle over -> "Xem điểm tích lũy" (opens screen 2, no event) */
   var CTA_TEXT = {
     checkIn: "Điểm danh ngay",
     viewPoints: "Xem điểm tích lũy"
@@ -135,11 +137,13 @@
     return isNaN(fallback.getTime()) ? null : fallback;
   }
 
+  function formatFullDate(date) {
+    return pad2(date.getDate()) + "/" + pad2(date.getMonth() + 1);
+  }
+
   /* Design: first cell shows "dd/mm", the rest just "dd", today shows "Hôm nay". */
   function formatDayLabel(date, dayPosition) {
-    return dayPosition === 1
-      ? pad2(date.getDate()) + "/" + pad2(date.getMonth() + 1)
-      : pad2(date.getDate());
+    return dayPosition === 1 ? formatFullDate(date) : pad2(date.getDate());
   }
 
 
@@ -246,11 +250,12 @@
       gridEl.appendChild(el);
     }
 
-    /* 8th block: reward day - same head/body structure as the other days. */
+    /* 8th block: reward day = cycle start + 7 days (e.g. 07/10 -> 14/10). */
+    var rewardDate = dateForDay(CONFIG.totalDays + 1);
     var bonus = document.createElement("div");
     bonus.className = "day bonus";
     bonus.innerHTML =
-      '<div class="head">' + CONFIG.payoutDateLabel + '</div>' +
+      '<div class="head">' + formatFullDate(rewardDate) + '</div>' +
       '<div class="body">' +
         '<img class="gift" src="' + BONUS_CELL_SRC + '" alt="">' +
         '<div class="bonus-lbl">Nhận thưởng</div>' +
@@ -306,6 +311,120 @@
   }
 
 
+  /* ================= CONFETTI =================
+     Self-contained canvas confetti (no external library), drawn over
+     the page for ~3s, then the canvas removes itself. Skipped when the
+     device has "reduce motion" turned on. */
+
+  var CONFETTI_COLORS = ["#FFD45C", "#F6B500", "#77FFA2", "#3BE07A", "#1D70FF", "#5B9BFF", "#FFFFFF", "#FF6B6B"];
+
+  function launchConfetti() {
+    if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    var canvas = document.createElement("canvas");
+    canvas.style.position = "fixed";
+    canvas.style.top = "0";
+    canvas.style.left = "0";
+    canvas.style.width = "100%";
+    canvas.style.height = "100%";
+    canvas.style.pointerEvents = "none";
+    canvas.style.zIndex = "9999";
+    document.body.appendChild(canvas);
+
+    var ctx = canvas.getContext("2d");
+    if (!ctx) { canvas.remove(); return; }
+
+    var dpr = window.devicePixelRatio || 1;
+    var W = window.innerWidth;
+    var H = window.innerHeight;
+    canvas.width = W * dpr;
+    canvas.height = H * dpr;
+    ctx.scale(dpr, dpr);
+
+    var pieces = [];
+    var COUNT = 140;
+
+    /* Two bursts from the left and right bottom corners + a shower from the top. */
+    for (var i = 0; i < COUNT; i++) {
+      var fromTop = i % 3 === 0;
+      var fromLeft = i % 2 === 0;
+      var angle, speed, x, y;
+
+      if (fromTop) {
+        x = Math.random() * W;
+        y = -20 - Math.random() * H * 0.3;
+        angle = Math.PI / 2;
+        speed = 1 + Math.random() * 2;
+      } else {
+        x = fromLeft ? 0 : W;
+        y = H * 0.7;
+        angle = fromLeft
+          ? -Math.PI / 2 + (Math.random() * 0.9 + 0.15)        /* up and to the right */
+          : -Math.PI / 2 - (Math.random() * 0.9 + 0.15);       /* up and to the left  */
+        speed = 9 + Math.random() * 8;
+      }
+
+      pieces.push({
+        x: x,
+        y: y,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed,
+        w: 6 + Math.random() * 6,
+        h: 4 + Math.random() * 6,
+        color: CONFETTI_COLORS[Math.floor(Math.random() * CONFETTI_COLORS.length)],
+        rot: Math.random() * Math.PI,
+        vr: (Math.random() - 0.5) * 0.3,
+        tilt: Math.random() * Math.PI,
+        round: Math.random() < 0.25
+      });
+    }
+
+    var DURATION = 3000;
+    var start = null;
+
+    function frame(ts) {
+      if (!start) start = ts;
+      var elapsed = ts - start;
+      var fade = elapsed > DURATION - 600 ? Math.max(0, (DURATION - elapsed) / 600) : 1;
+
+      ctx.clearRect(0, 0, W, H);
+      ctx.globalAlpha = fade;
+
+      for (var j = 0; j < pieces.length; j++) {
+        var p = pieces[j];
+        p.vy += 0.25;          /* gravity */
+        p.vx *= 0.985;         /* air drag */
+        p.vy *= 0.985;
+        p.x += p.vx;
+        p.y += p.vy;
+        p.rot += p.vr;
+        p.tilt += 0.1;
+
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.rot);
+        ctx.fillStyle = p.color;
+        if (p.round) {
+          ctx.beginPath();
+          ctx.arc(0, 0, p.h / 2, 0, Math.PI * 2);
+          ctx.fill();
+        } else {
+          ctx.fillRect(-p.w / 2, -p.h / 2 * Math.abs(Math.cos(p.tilt)), p.w, p.h * Math.abs(Math.cos(p.tilt)) + 1);
+        }
+        ctx.restore();
+      }
+
+      if (elapsed < DURATION) {
+        requestAnimationFrame(frame);
+      } else {
+        canvas.remove();
+      }
+    }
+
+    requestAnimationFrame(frame);
+  }
+
+
   /* ================= SCREENS ================= */
 
   function show(id) {
@@ -334,10 +453,11 @@
 
   /* ================= CHECK-IN ================= */
 
-  /* Always opens screen 2 with the user's total. */
+  /* Always opens screen 2 with the user's total, with confetti. */
   function showResult(fromPoints) {
     show(SCREEN.DAILY);
     countUp(dailyAmountEl, fromPoints, totalPoints);
+    launchConfetti();
   }
 
   function onCtaClick() {
@@ -376,7 +496,8 @@
   ctaBtnEl.addEventListener("click", onCtaClick);
 
   ["closeMain", "closeDaily", "dailyCloseBtn"].forEach(function (id) {
-    $(id).addEventListener("click", closeWidget);
+    var el = $(id);
+    if (el) el.addEventListener("click", closeWidget);
   });
 
   render();

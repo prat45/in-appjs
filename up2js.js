@@ -34,7 +34,7 @@
     finalRewardPoints: 800,
     eventName: "7-DAY STREAK",
     /* Full UTC instant on purpose - see parseFlexibleDate. */
-    defaultCycleStartDate: "2026-09-24T00:00:00.000Z"
+    defaultCycleStartDate: "2026-11-01T00:00:00.000Z"
   };
 
   var ATTR = {
@@ -73,10 +73,12 @@
   };
   var BONUS_CELL_SRC = ASSET + "cell-bonus-day.png";
 
+  /* The button is ALWAYS clickable:
+       - check-in available  -> "Điểm danh ngay" (tracks event, then opens screen 2/3)
+       - already checked in / cycle over -> "Xem điểm tích lũy" (opens screen 2/3, no event) */
   var CTA_TEXT = {
-    enabled: "Điểm danh ngay",
-    checkedIn: "Đã điểm danh hôm nay",
-    finished: "Đã kết thúc"
+    checkIn: "Điểm danh ngay",
+    viewPoints: "Xem điểm tích lũy"
   };
 
   var SCREEN = { CHECKIN: "checkin", DAILY: "daily", FINAL: "final" };
@@ -221,7 +223,6 @@
   var pointsValEl = $("pointsVal");
   var gridEl = $("grid");
   var ctaBtnEl = $("ctaBtn");
-  var ctaSubtextEl = $("ctaSubtext");
   var screens = {
     checkin: $("screenCheckin"),
     daily: $("screenDaily"),
@@ -262,19 +263,12 @@
 
     pointsValEl.textContent = totalPoints;
 
-    if (cycleFinished) {
-      ctaBtnEl.disabled = true;
-      ctaBtnEl.textContent = CTA_TEXT.finished;
-      ctaSubtextEl.hidden = true;
-    } else if (alreadyCheckedInToday) {
-      ctaBtnEl.disabled = true;
-      ctaBtnEl.textContent = CTA_TEXT.checkedIn;
-      ctaSubtextEl.hidden = false;
-    } else {
-      ctaBtnEl.disabled = false;
-      ctaBtnEl.textContent = CTA_TEXT.enabled;
-      ctaSubtextEl.hidden = true;
-    }
+    ctaBtnEl.disabled = false;
+    ctaBtnEl.textContent = canCheckIn() ? CTA_TEXT.checkIn : CTA_TEXT.viewPoints;
+  }
+
+  function canCheckIn() {
+    return !cycleFinished && !alreadyCheckedInToday;
   }
 
 
@@ -344,11 +338,25 @@
 
   /* ================= CHECK-IN ================= */
 
-  function checkIn() {
+  /* Opens screen 3 when the total has reached 800, otherwise screen 2. */
+  function showResult(fromPoints) {
+    if (totalPoints >= CONFIG.finalRewardPoints) {
+      show(SCREEN.FINAL);
+      countUp(finalAmountEl, fromPoints, totalPoints);
+    } else {
+      show(SCREEN.DAILY);
+      countUp(dailyAmountEl, fromPoints, totalPoints);
+    }
+  }
 
-    if (cycleFinished || alreadyCheckedInToday) return;
+  function onCtaClick() {
 
-    ctaBtnEl.disabled = true;
+    /* Already checked in today, or the 7 days are over:
+       no new points, just show the user's current total. */
+    if (!canCheckIn()) {
+      showResult(totalPoints);
+      return;
+    }
 
     var previousPoints = totalPoints;
 
@@ -368,20 +376,13 @@
     });
 
     render();
-
-    if (totalPoints >= CONFIG.finalRewardPoints) {
-      show(SCREEN.FINAL);
-      countUp(finalAmountEl, previousPoints, totalPoints);
-    } else {
-      show(SCREEN.DAILY);
-      countUp(dailyAmountEl, previousPoints, totalPoints);
-    }
+    showResult(previousPoints);
   }
 
 
   /* ================= WIRE UP ================= */
 
-  ctaBtnEl.addEventListener("click", checkIn);
+  ctaBtnEl.addEventListener("click", onCtaClick);
 
   ["closeMain", "closeDaily", "closeFinal", "dailyCloseBtn", "finalCloseBtn"].forEach(function (id) {
     $(id).addEventListener("click", closeWidget);

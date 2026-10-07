@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Điểm danh giữ chuỗi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/prat45/in-appjs@main/Streck1.css">
+</head>
+<body>
+
+<!-- ================= SCREEN 1: GAME MAIN ================= -->
+<section class="screen is-on" id="screenCheckin">
+  <div class="card">
+    <button type="button" class="closeX" id="closeMain" aria-label="Đóng">✕</button>
+
+    <div class="hero">
+      <img class="tagline" src="https://onsite-assets-editor.s3.amazonaws.com/images/we10a5cb699/02.%20Tagline.png" alt="Giữ chuỗi bạn thân - Nhận 800 điểm">
+    </div>
+
+    <!-- Birthday-cake background sits BEHIND the whole board (points bar + stats + grid) -->
+    <div class="board">
+      <div class="points-bar">
+        <span class="points-label">Điểm hiện có</span>
+        <div class="points-val">
+          <img class="coin" src="https://onsite-assets-editor.s3.amazonaws.com/images/we10a5cb699/icon-upcoming.png" alt="">
+          <span id="pointsVal">0</span>&nbsp;<span class="unit">điểm</span>
+        </div>
+      </div>
+
+      <div class="stats">
+        <div class="stat">
+          <div class="stat-lbl">
+            <img src="https://onsite-assets-editor.s3.amazonaws.com/images/we10a5cb699/icon-claimed-seal.png" alt="">
+            <span>Điểm danh mỗi ngày</span>
+          </div>
+          <div class="stat-val"><span id="statDaily">50</span> điểm</div>
+        </div>
+        <div class="stat">
+          <div class="stat-lbl">
+            <img src="https://onsite-assets-editor.s3.amazonaws.com/images/we10a5cb699/icon-fire-small.png" alt="">
+            <span>Điểm danh 7 ngày</span>
+          </div>
+          <div class="stat-val"><span id="statMax">800</span> điểm</div>
+        </div>
+      </div>
+
+      <div class="grid" id="grid"></div>
+
+      <div class="payout">
+        <img src="https://onsite-assets-editor.s3.amazonaws.com/images/we10a5cb699/06.%20Disclaimer.png" alt="Điểm tích lũy sẽ được nhận vào ngày 08/11">
+      </div>
+    </div>
+
+    <button type="button" class="btn" id="ctaBtn">Điểm danh ngay</button>
+    <div class="subtext" id="ctaSubtext" hidden>Trở lại vào ngày mai để giữ chuỗi</div>
+  </div>
+</section>
+
+<!-- ================= SCREEN 2: DAILY CHECK-IN SUCCESS ================= -->
+<section class="screen" id="screenDaily">
+  <div class="card card--sheet">
+    <button type="button" class="closeX" id="closeDaily" aria-label="Đóng">✕</button>
+    <div class="sheet">
+      <h2 class="sheet-title">Điểm danh thành công</h2>
+      <div class="illus">
+        <img src="https://onsite-assets-editor.s3.amazonaws.com/images/we10a5cb699/Fire%20Strike.png" alt="">
+      </div>
+      <p class="sheet-lbl">Điểm tích lũy hiện tại</p>
+      <div class="amount" id="dailyAmount">0</div>
+      <p class="sheet-msg">Mở UNow mỗi ngày<br>để tích thêm nhiều điểm thưởng</p>
+    </div>
+    <button type="button" class="btn" id="dailyCloseBtn">Trở lại vào ngày mai</button>
+  </div>
+</section>
+
+<!-- ================= SCREEN 3: FINAL REWARD (800 points) ================= -->
+<section class="screen" id="screenFinal">
+  <div class="card card--sheet">
+    <button type="button" class="closeX" id="closeFinal" aria-label="Đóng">✕</button>
+    <div class="sheet">
+      <h2 class="sheet-title">Hoàn thành chuỗi<br>điểm danh</h2>
+      <div class="illus illus--gift">
+        <span class="sparkle s1">✦</span>
+        <span class="sparkle s2">✦</span>
+        <span class="sparkle s3">✦</span>
+        <svg viewBox="0 0 200 190" fill="none" aria-hidden="true">
+          <defs>
+            <linearGradient id="gBox" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#2E63E6"/>
+              <stop offset="1" stop-color="#0B1E66"/>
+            </linearGradient>
+            <linearGradient id="gLid" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#3B74F5"/>
+              <stop offset="1" stop-color="#2149C4"/>
+            </linearGradient>
+            <linearGradient id="gCoin" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#FFE27A"/>
+              <stop offset="1" stop-color="#E9A400"/>
+            </linearGradient>
+          </defs>
+          <!-- squiggle -->
+          <path d="M20 66c8-4 2-12 10-16s4-12 10-14" stroke="#FFC52E" stroke-width="5" stroke-linecap="round"/>
+          <!-- lid (tilted, floating) -->
+          <g transform="rotate(14 110 40)">
+            <rect x="38" y="28" width="144" height="30" rx="4" fill="url(#gLid)"/>
+            <rect x="96" y="28" width="26" height="30" fill="#3DDC84"/>
+            <path d="M109 28c-14-22-40-24-38-10 2 12 26 12 38 10z" stroke="#3DDC84" stroke-width="8" stroke-linejoin="round"/>
+            <path d="M109 28c14-22 40-24 38-10-2 12-26 12-38 10z" stroke="#3DDC84" stroke-width="8" stroke-linejoin="round"/>
+          </g>
+          <!-- box -->
+          <rect x="42" y="86" width="132" height="92" fill="url(#gBox)"/>
+          <!-- coin -->
+          <circle cx="108" cy="122" r="40" fill="url(#gCoin)"/>
+          <circle cx="108" cy="122" r="31" fill="none" stroke="#C98A00" stroke-width="3" opacity=".55"/>
+          <path d="M108 100l6.6 13.4 14.8 2.2-10.7 10.4 2.5 14.7L108 133.8l-13.2 6.9 2.5-14.7-10.7-10.4 14.8-2.2z" fill="none" stroke="#fff" stroke-width="3.5" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <p class="sheet-lbl">Tổng số điểm thưởng</p>
+      <div class="amount" id="finalAmount">800</div>
+      <p class="sheet-msg">Cảm ơn “Bạn thân” đã chăm chỉ điểm danh.<br>Mãi bên nhau bạn nhé!</p>
+    </div>
+    <button type="button" class="btn" id="finalCloseBtn">Xem điểm</button>
+  </div>
+</section>
+
+<script>
+window.WE_CUSTOM_DATA = {
+    CampaignId: 'camp_311olhm',
+    CampaignData: '{{user["custom"]["xyz"] | dump}}'
+  };
+</script>
+<script src="https://cdn.jsdelivr.net/gh/prat45/in-appjs@main/streck2.js"></script>
+</body>
+</html>

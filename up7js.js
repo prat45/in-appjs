@@ -70,7 +70,7 @@
   };
 
   /* Gift box art on the 8th (reward) block. */
-  var BONUS_CELL_SRC = ASSET + "Gift%20box%20%282%29.png";
+  var BONUS_CELL_SRC = ASSET + "GIFT%20BOX%20%281%29.png";
 
   /* The button is ALWAYS clickable:
        - check-in available  -> "Điểm danh ngay" (tracks event, then opens screen 2)

@@ -1,0 +1,476 @@
+/* WebEngage modal overrides */
+.close-button { z-index: 999; }
+.modal-content { margin-left: auto; margin-right: auto; width: 98% !important; background-color: transparent !important; }
+
+
+
+/* ---------- screens ---------- */
+.screen { display: none; width: 100%; }
+.screen.is-on { display: block; }
+
+.card {
+  position: relative;
+  width: 100%;
+  max-width: 380px;
+  min-height: 640px;
+  margin: 0 auto;
+  padding: 22px 22px 28px;
+  background: #000000;
+  color: #ffffff;
+  overflow: hidden;
+}
+
+.closeX {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 10;
+  width: 30px;
+  height: 30px;
+  border: 0;
+  background: transparent;
+  color: #6CF0A6;
+  font-size: 22px;
+  line-height: 30px;
+  cursor: pointer;
+}
+
+/* =========================================================
+   SCREEN 1 - MAIN
+   ========================================================= */
+
+.hero { text-align: center; padding-top: 4px; }
+.tagline { display: block; width: 66%; height: auto; margin: 0 auto; }
+
+/* Panel: blue header on top, light body underneath */
+.panel {
+  position: relative;
+  margin-top: 34px;
+  border-radius: 16px;
+  background: linear-gradient(180deg, #3D72EF 0%, #2453D8 100%);
+}
+
+/* Birthday cake in the top-right corner, sticking out above the panel */
+.panel .cake {
+  position: absolute;
+  top: -46px;
+  right: -2px;
+  width: 104px;
+  height: auto;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.points-bar {
+  position: relative;
+  z-index: 3;
+  padding: 14px 112px 12px 14px;  /* right side kept clear for the cake */
+}
+.points-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1.3;
+}
+.points-val {
+  display: flex;
+  align-items: center;
+  margin-top: 2px;
+  font-size: 22px;
+  font-weight: 800;
+  color: #3BE07A;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+.points-val .coin { width: 22px; height: 22px; margin-right: 4px; flex-shrink: 0; }
+.points-val .unit { margin-left: 5px; }
+
+.panel-body {
+  position: relative;
+  z-index: 3;
+  border-radius: 16px;
+  padding: 8px 8px 12px;
+  background: linear-gradient(180deg, #EEF5FF 0%, #D6EEFF 55%, #B9E6FB 100%);
+}
+
+/* Stats card */
+.stats {
+  display: flex;
+  align-items: center;
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 10px 4px;
+}
+.stat { flex: 1 1 0; min-width: 0; text-align: center; }
+.stat-divider { width: 1px; height: 30px; background: #C9DAF8; flex-shrink: 0; }
+.stat-lbl {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 600;
+  color: #2159CE;
+  white-space: nowrap;
+}
+.stat-lbl img { width: 12px; height: 12px; margin-right: 4px; flex-shrink: 0; }
+.stat-val {
+  margin-top: 3px;
+  font-size: 16px;
+  font-weight: 800;
+  color: #1D4FC4;
+}
+
+/* Day grid */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 7px;
+  padding: 14px 0 12px;
+}
+.day {
+  min-width: 0;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1.5px solid transparent;
+  background: #ffffff;
+  text-align: center;
+}
+.day .head {
+  padding: 3px 5px;
+  font-size: 9px;
+  font-weight: 700;
+  line-height: 1.3;
+  text-align: left;
+}
+.day .body {
+  padding: 6px 0 6px;
+  border-radius: 6px 6px 0 0;
+}
+.day .icon { display: block; width: 24px; height: 24px; margin: 0 auto 3px; }
+.day .pts { font-size: 12px; font-weight: 800; line-height: 1; }
+
+/* missed */
+.day.missed { border-color: #F4F5F7; background: #F4F5F7; }
+.day.missed .head { color: #C3C7CC; }
+.day.missed .body { background: #C4C6CA; }
+.day.missed .pts { color: #F4F5F6; }
+
+/* claimed */
+.day.claimed { border-color: #E3F8EA; background: #E3F8EA; }
+.day.claimed .head { color: #7CD69B; }
+.day.claimed .body { background: #B5E8C4; }
+.day.claimed .pts { color: #2E9E57; }
+
+/* today */
+.day.today { border-color: #4CCB6E; background: #4CCB6E; }
+.day.today .head { color: #ffffff; text-align: center; }
+.day.today .body { background: #ffffff; }
+.day.today .pts { color: #2E9E57; }
+
+/* upcoming */
+.day.upcoming { border-color: #FFF0C7; background: #FFF0C7; }
+.day.upcoming .head { color: #F5A100; }
+.day.upcoming .body { background: #ffffff; }
+.day.upcoming .pts { color: #F5A100; }
+
+/* 8th cell - baked gift art */
+.day.bonus { border: 0; background: transparent; }
+.day.bonus img { display: block; width: 100%; height: 100%; object-fit: cover; border-radius: 8px; }
+
+/* Disclaimer pill */
+.payout {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 8px 10px;
+}
+.payout img { display: block; max-width: 100%; max-height: 14px; width: auto; height: auto; }
+
+/* =========================================================
+   BUTTON (all screens)
+   ========================================================= */
+.btn {
+  display: block;
+  width: 100%;
+  height: 46px;
+  margin-top: 22px;
+  border: 0;
+  border-radius: 12px;
+  background: linear-gradient(180deg, #3E77F4 0%, #2350D6 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  color: #8CF5B0;
+  font-family: "Be Vietnam Pro", Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 800;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.btn:active { transform: translateY(1px); }
+
+/* =========================================================
+   SCREENS 2 & 3
+   ========================================================= */
+.card--sheet { display: flex; flex-direction: column; justify-content: space-between; }
+.sheet { flex: 1; text-align: center; padding: 44px 4px 0; }
+
+.sheet-title { font-size: 20px; font-weight: 700; line-height: 1.4; color: #6CF0A6; }
+
+.illus { position: relative; width: 190px; height: 190px; margin: 22px auto 26px; }
+.illus img, .illus svg { display: block; width: 100%; height: 100%; object-fit: contain; }
+
+.sparkle { position: absolute; color: #FFE27A; line-height: 1; }
+.sparkle.s1 { top: 24px; right: 6px; font-size: 14px; }
+.sparkle.s2 { bottom: 56px; left: -4px; font-size: 26px; }
+.sparkle.s3 { bottom: 62px; right: -6px; font-size: 20px; }
+
+.sheet-lbl { font-size: 13px; font-weight: 600; color: #FFE27A; margin-bottom: 4px; }
+.amount {
+  font-size: 64px;
+  font-weight: 900;
+  line-height: 1.05;
+  color: #F6B500;
+  background: linear-gradient(180deg, #FFE89A 0%, #F6B500 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.sheet-msg { font-size: 13px; font-weight: 600; line-height: 1.55; color: #ffffff; margin-top: 12px; }
+
+/* small phones */
+@media (max-width: 340px) {
+  .card { padding-left: 14px; padding-right: 14px; }
+  .points-bar { padding-right: 96px; }
+  .panel .cake { width: 90px; top: -40px; }
+  .stat-lbl { font-size: 9px; }
+  .grid { gap: 5px; }
+  .amount { font-size: 54px; }
+}
+/* ===== stats row is now a single image ===== */
+.stats-img {
+    display: block;
+    width: 100%;
+}
+.stats-img img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+/* ===== DAY BLOCKS (matches design) =====
+   #grid prefix = higher specificity, so these win over upcss2.css */
+#grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 8px;
+    padding: 14px 0 12px;
+}
+#grid .day {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    border-radius: 10px;
+    border: 2px solid #EEEFF1;
+    overflow: hidden;
+    text-align: center;
+    box-shadow: none;
+    animation: none;
+}
+#grid .day .head {
+    padding: 4px 6px 3px;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1.3;
+    text-align: left;
+}
+#grid .day .body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 58px;
+    padding: 0;
+    border-radius: 8px 8px 0 0;
+}
+#grid .day .icon {
+    display: block;
+    width: 26px;
+    height: 26px;
+    margin: 0 auto 3px;
+}
+#grid .day .pts {
+    font-size: 14px;
+    font-weight: 800;
+    line-height: 1;
+}
+
+/* missed - grey */
+#grid .day.missed { border-color: #F1F2F4; background: linear-gradient(180deg, #FFFFFF 0%, #E9EAEC 100%); }
+#grid .day.missed .head { color: #C9CCD1; }
+#grid .day.missed .body { background: #BEC0C4; }
+#grid .day.missed .pts { color: #F3F4F5; }
+#grid .day.missed .icon { opacity: 0.7; }
+
+/* claimed - green */
+#grid .day.claimed { border-color: #E3F7EA; background: #E3F7EA; }
+#grid .day.claimed .head { color: #7DD89B; }
+#grid .day.claimed .body { background: #B6EAC4; }
+#grid .day.claimed .pts { color: #2E9E57; }
+
+/* today - green border, green head, white body */
+#grid .day.today { border-color: #55C977; background: #6BD488; }
+#grid .day.today .head { color: #FFFFFF; text-align: center; }
+#grid .day.today .body { background: #FFFFFF; }
+#grid .day.today .pts { color: #2E9E57; }
+
+/* upcoming - yellow */
+#grid .day.upcoming { border-color: #FFF0C6; background: #FFF0C6; }
+#grid .day.upcoming .head { color: #F5A400; }
+#grid .day.upcoming .body { background: #FFFFFF; }
+#grid .day.upcoming .pts { color: #F5A400; }
+
+/* 8th block - reward day (red head, pink body, gift + label) */
+#grid .day.bonus { border-color: #EE5A5A; background: linear-gradient(180deg, #F47070 0%, #E84848 100%); }
+#grid .day.bonus .head { color: #FFFFFF; }
+#grid .day.bonus .body { background: linear-gradient(180deg, #FFF6F2 0%, #FFD9CC 100%); }
+#grid .day.bonus .gift { display: block; width: 34px; height: 34px; object-fit: contain; margin: 0 auto 2px; }
+#grid .day.bonus .bonus-lbl { font-size: 9px; font-weight: 800; color: #EF4F2C; line-height: 1.1; white-space: nowrap; }
+
+@media (max-width: 340px) {
+    #grid { gap: 5px; }
+    #grid .day .head { font-size: 10px; }
+    #grid .day .body { height: 52px; }
+    #grid .day .icon { width: 22px; height: 22px; }
+}
+/* =========================================================
+   DAY BLOCKS - matches reference design
+   Replace your old "DAY BLOCKS" + "EVEN DAY BLOCKS" CSS with this.
+   Every box keeps the same shape (aspect-ratio), so nothing inside
+   can make one box bigger than the others.
+   ========================================================= */
+#grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-auto-rows: auto;
+    gap: 8px;
+    padding: 14px 0 12px;
+}
+#grid .day {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    min-height: 0;
+    height: auto;
+    aspect-ratio: 0.87;          /* width / height - all boxes identical */
+    border: 0;
+    border-radius: 12px;
+    overflow: hidden;
+    text-align: center;
+    box-shadow: none;
+    animation: none;
+}
+
+/* header strip (date / Hôm nay) */
+#grid .day .head {
+    flex: 0 0 auto;
+    height: 24px;
+    padding: 0 7px;
+    font-size: 12px;
+    font-weight: 800;
+    line-height: 24px;
+    text-align: left;
+    white-space: nowrap;
+}
+
+/* body (icon + points) */
+#grid .day .body {
+    flex: 1 1 auto;
+    min-height: 0;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4px 2px 6px;
+    border-radius: 10px 10px 0 0;
+    overflow: hidden;
+}
+#grid .day .icon {
+    display: block;
+    width: 30px;
+    height: 30px;
+    margin: 0 auto 4px;
+    flex-shrink: 0;
+}
+#grid .day .pts {
+    font-size: 16px;
+    font-weight: 800;
+    line-height: 1;
+}
+
+/* missed - grey */
+#grid .day.missed { background: linear-gradient(180deg, #FFFFFF 0%, #E6E6E8 100%); }
+#grid .day.missed .head { color: #CFD1D4; }
+#grid .day.missed .body { background: #C6C7C9; }
+#grid .day.missed .pts { color: #E9EAEB; }
+#grid .day.missed .icon { opacity: 0.75; }
+
+/* claimed - green */
+#grid .day.claimed { background: linear-gradient(180deg, #F2FCF5 0%, #D9F5E2 100%); }
+#grid .day.claimed .head { color: #8FDCA6; }
+#grid .day.claimed .body { background: #B5E8C3; }
+#grid .day.claimed .pts { color: #3BA85B; }
+
+/* today - green header + green border, white body */
+#grid .day.today {
+    background: linear-gradient(180deg, #7ADB92 0%, #5CCB78 100%);
+    border: 2px solid #5CCB78;
+}
+#grid .day.today .head { color: #FFFFFF; text-align: center; height: 22px; line-height: 22px; }
+#grid .day.today .body { background: #FFFFFF; border-radius: 9px 9px 9px 9px; }
+#grid .day.today .pts { color: #3BA85B; }
+
+/* upcoming - yellow header, white body */
+#grid .day.upcoming { background: linear-gradient(180deg, #FFF6DD 0%, #FFEFC6 100%); }
+#grid .day.upcoming .head { color: #F2A73A; }
+#grid .day.upcoming .body { background: #FFFFFF; }
+#grid .day.upcoming .pts { color: #F2A73A; }
+
+/* reward day - red header, pink body, gift fills the space */
+#grid .day.bonus { background: linear-gradient(180deg, #F07575 0%, #E24B4B 100%); }
+#grid .day.bonus .head { color: #FFFFFF; }
+#grid .day.bonus .body {
+    background: linear-gradient(180deg, #FFFFFF 0%, #FDE1D8 100%);
+    padding: 2px 2px 5px;
+}
+#grid .day.bonus .gift {
+    display: block;
+    flex: 1 1 0;
+    min-height: 0;
+    width: 100%;
+    max-width: 80%;
+    height: auto;
+    object-fit: contain;
+    margin: 0 auto 2px;
+}
+#grid .day.bonus .bonus-lbl {
+    flex: 0 0 auto;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: -0.2px;
+    color: #EF5A2C;
+    line-height: 1.1;
+    white-space: nowrap;
+}
+
+/* small phones */
+@media (max-width: 340px) {
+    #grid { gap: 6px; }
+    #grid .day .head { font-size: 10px; height: 20px; line-height: 20px; padding: 0 5px; }
+    #grid .day.today .head { height: 18px; line-height: 18px; }
+    #grid .day .icon { width: 24px; height: 24px; }
+    #grid .day .pts { font-size: 13px; }
+    #grid .day.bonus .bonus-lbl { font-size: 8.5px; }
+}

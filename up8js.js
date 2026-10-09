@@ -26,7 +26,7 @@
     dailyPoints: 50,
     milestones: [
      // { day: 4, bonus: 200 },
-      { day: 7, bonus: 250 }
+      { day: 7, bonus: 450 }
     ],
     eventName: "7-DAY STREAK",
     /* Full UTC instant on purpose - see parseFlexibleDate. */

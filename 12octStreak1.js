@@ -527,7 +527,9 @@
 
   ctaBtnEl.addEventListener("click", onCtaClick);
 
-  ["closeMain", "closeDaily", "dailyCloseBtn"].forEach(function (id) {
+  /* "dailyCloseBtn" (Trở lại vào ngày mai) is NOT bound here - it closes
+     through its own onclick="weNotification.close();" in the HTML. */
+  ["closeMain", "closeDaily"].forEach(function (id) {
     var el = $(id);
     if (el) el.addEventListener("click", closeWidget);
   });

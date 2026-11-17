@@ -1,0 +1,179 @@
+/* =====================================================================
+   SCALING - layout drawn on a 330 x 660 design canvas (1rem = 10 design px).
+   Root size is chosen so the canvas always fits the device: full width on
+   normal phones and never taller than the screen (no overflow / scroll).
+   ===================================================================== */
+html { font-size: min(calc(100vw / 33), calc(100vh / 66)); }
+@supports (height: 100dvh) {
+    html { font-size: min(calc(100vw / 33), calc(100dvh / 66)); }
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html, body {
+    margin: 0; padding: 0; width: 100%; height: 100%;
+    overflow: hidden; background: #000; color: #fff;
+    font-family: "Be Vietnam Pro", Arial, Helvetica, sans-serif;
+    -webkit-font-smoothing: antialiased; -webkit-tap-highlight-color: transparent;
+    -webkit-text-size-adjust: 100%; text-size-adjust: 100%;
+}
+img { display: block; border: 0; max-width: none; }
+button { font: inherit; color: inherit; background: none; border: 0; padding: 0; margin: 0; cursor: pointer; }
+a { color: inherit; }
+
+.sr-only {
+    position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+/* Full-screen black page, design canvas centred inside it */
+.card {
+    position: fixed; inset: 0; width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    background: #000; overflow: hidden;
+}
+.stage { position: relative; width: 33rem; height: 66rem; flex: 0 0 auto; }
+
+#viewStamps, #viewRules { position: absolute; inset: 0; }
+
+/* ---------- Close (X) ---------- */
+.close-x {
+    position: absolute; top: 5.6rem; right: 1.9rem; z-index: 20;
+    width: 2.6rem; height: 2.6rem; display: flex; align-items: center; justify-content: center;
+    text-decoration: none; color: #fff; font-size: 2.6rem; line-height: 1; font-weight: 500;
+}
+
+/* ---------- Header: logo + "Nhận tới 1500 điểm" + flower ---------- */
+.header-img {
+    position: absolute; top: 4.8rem; left: 50%; z-index: 5;
+    width: 24rem; height: 11.4rem; object-fit: contain;
+    transform: translateX(-50%) translate(-0.75rem, -1.6rem) scale(1.435);
+    transform-origin: 50% 0;
+    pointer-events: none;
+    animation: fadeIn .6s ease-out both;
+}
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+/* ---------- Blue collection panel ---------- */
+.panel {
+    position: absolute; top: 16.6rem; left: 2.8rem; width: 27.5rem; height: 43.7rem;
+    background: url("https://onsite-assets-editor.s3.amazonaws.com/images/we2024b75c/Collection%20Panel_1.png") center top / 100% 100% no-repeat;
+}
+
+/* Top band: goal text + 500 badge */
+.goal { position: absolute; top: 0; left: 0; width: 100%; height: 8.6rem; }
+.goal-text {
+    position: absolute; top: 0; left: 0; width: 16.8rem; height: 8.6rem;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; font-size: 1.65rem; font-weight: 600; line-height: 2.2rem; white-space: nowrap;
+}
+.goal-text .accent { color: #7dff9a; font-weight: 700; }
+.goal-badge {
+    position: absolute; top: 1rem; left: 16rem; width: 10rem; height: 5.8rem;
+    object-fit: contain; animation: badgePulse 2.4s ease-in-out infinite;
+}
+@keyframes badgePulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+
+/* Final-state congrats text */
+.goal-final {
+    position: absolute; top: 0; left: 0; width: 100%; height: 7.7rem;
+    display: none; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; font-size: 1.65rem; font-weight: 600; line-height: 2.3rem; white-space: nowrap;
+}
+.goal-final .accent { color: #7dff9a; font-weight: 700; }
+
+/* The game script writes into these - kept in DOM, hidden (not in design) */
+.goal-data { display: none; }
+
+.hint {
+    position: absolute; top: 8.8rem; left: 0; width: 100%; margin: 0;
+    font-size: .86rem; line-height: 1.2rem; text-align: center; white-space: nowrap;
+    color: rgba(255,255,255,.85); font-weight: 500;
+}
+
+/* ---------- Stamp grid: 3 x 3 fixed cells ---------- */
+.grid {
+    position: absolute; top: 10.7rem; left: 1.1rem;
+    display: grid;
+    grid-template-columns: repeat(3, 7.55rem);
+    grid-auto-rows: 9.65rem;
+    column-gap: 1.47rem; row-gap: .39rem;
+}
+.stamp {
+    position: relative; display: block; width: 7.55rem; height: 9.65rem;
+    text-decoration: none; cursor: pointer; border-radius: .9rem;
+}
+/* artwork has a little transparent margin - enlarge so the frame fills the cell */
+.stamp-img {
+    position: absolute; left: -4.75%; top: -4.75%; width: 109.5%; height: 109.5%;
+    object-fit: contain; object-position: center;
+    transition: transform .15s ease;
+}
+.stamp:active .stamp-img { transform: scale(.95); }
+.stamp-label, .stamp-tick { display: none !important; }
+.stamp.default .stamp-img { filter: none; }
+
+/* Purchased, waiting for points (4-day window) */
+.stamp.highlighted { animation: glow 1.6s ease-in-out infinite; }
+@keyframes glow {
+    0%,100% { box-shadow: 0 0 0 .2rem #ffc52e, 0 0 .6rem .1rem rgba(255,197,46,.5); }
+    50%     { box-shadow: 0 0 0 .2rem #ffe07a, 0 0 1.6rem .4rem rgba(255,197,46,.9); }
+}
+
+/* Points confirmed: collected artwork pops in */
+.stamp.confirmed .stamp-img { animation: popIn .5s cubic-bezier(.2,1.4,.4,1) both; }
+@keyframes popIn { from { transform: scale(.6); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+.grid .stamp:nth-child(2) .stamp-img { animation-delay: .05s; }
+.grid .stamp:nth-child(3) .stamp-img { animation-delay: .10s; }
+.grid .stamp:nth-child(4) .stamp-img { animation-delay: .15s; }
+.grid .stamp:nth-child(5) .stamp-img { animation-delay: .20s; }
+.grid .stamp:nth-child(6) .stamp-img { animation-delay: .25s; }
+.grid .stamp:nth-child(7) .stamp-img { animation-delay: .30s; }
+.grid .stamp:nth-child(8) .stamp-img { animation-delay: .35s; }
+.grid .stamp:nth-child(9) .stamp-img { animation-delay: .40s; }
+
+/* ---------- Image buttons ---------- */
+.btn-group {
+    position: absolute; top: 41.6rem; left: .4rem; width: 26.7rem; height: 3.4rem;
+    display: flex; justify-content: space-between; align-items: center; z-index: 3;
+}
+.img-btn {
+    position: relative; display: block; width: 13rem; height: 3.4rem; flex: 0 0 auto;
+    text-decoration: none; cursor: pointer;
+    transition: transform .12s ease, filter .12s ease;
+}
+/* button artwork has transparent padding - scale it up to the design size */
+.img-btn img {
+    width: 100%; height: 100%; object-fit: contain; pointer-events: none;
+    transform: translateX(.35rem) scale(1.54); transform-origin: 50% 50%;
+}
+.img-btn:active { transform: scale(.95); filter: brightness(.9); }
+
+#finalBtnGroup { display: none; top: 41rem; }
+
+/* ---------- Final (complete) state ---------- */
+#mainModal.is-complete .goal-text,
+#mainModal.is-complete .goal-badge,
+#mainModal.is-complete .hint { display: none; }
+#mainModal.is-complete .goal-final { display: flex; }
+#mainModal.is-complete #normalBtnGroup { display: none !important; }
+#mainModal.is-complete #finalBtnGroup { display: flex; }
+
+/* ---------- Rules page (TnC) ---------- */
+.rules-img {
+    position: absolute; top: 7rem; left: 2.4rem; width: 28.2rem; height: 54rem;
+    object-fit: contain; object-position: center top;
+    transform: translate(.6rem, -6.8rem) scale(1.3); transform-origin: 50% 0;
+    pointer-events: none;
+}
+.rules-back {
+    position: absolute; top: 58.3rem; left: 50%; margin-left: -6.5rem;
+    width: 13rem; height: 3.6rem; z-index: 2;
+}
+.rules-back img { transform: translateX(.7rem) scale(1.7); }
+
+/* ---------- Confetti ---------- */
+#confettiCanvas { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 50; }
+
+@media (prefers-reduced-motion: reduce) {
+    .header-img, .goal-badge, .stamp, .stamp-img { animation: none !important; }
+}

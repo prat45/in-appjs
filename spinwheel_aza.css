@@ -1,0 +1,270 @@
+:root {
+    --aza-rust: #B93B1C;
+    --aza-rust-light: #C9553A;
+    --aza-peach: #FBD9C8;
+    --aza-blush: #FFF5F0;
+    --aza-ink: #1F1410;
+    --aza-muted: #7A5D52;
+    --aza-hint: #A08A82;
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { height: 100%; background: #ffffff; }
+html * { font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; }
+
+.n-preview-close { z-index: 999999999; }
+.n-preview-img-wrapper { height: 100% !important; max-height: 100%; width: 100%; margin: 0; }
+
+/* ---------- Shell ---------- */
+dialog.main {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    max-width: none;
+    height: 100%;
+    max-height: none;
+    margin: 0;
+    padding: 24px 16px;
+    border: none;
+    background: #ffffff;
+    color: var(--aza-ink);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+h2 {
+    font-weight: 800;
+    font-size: 26px;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+    color: var(--aza-ink);
+    text-align: center;
+}
+h4 {
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 1.45;
+    color: var(--aza-muted);
+    text-align: center;
+    max-width: 300px;
+}
+
+/* ---------- Spin screen ---------- */
+.spinContainer {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+}
+.spinContainer > h4 { margin-bottom: 4px; }
+
+#weSpinWheel { /* Don't change the id - the wheel is drawn into it */
+    width: min(88vw, 380px, 54vh);
+    aspect-ratio: 420 / 450;
+}
+#weSpinWheel svg { display: block; width: 100%; height: 100%; overflow: visible; }
+
+.weHint { font-size: 14px; font-weight: 500; color: var(--aza-hint); text-align: center; }
+
+/* Wheel interactions */
+.weSpinTrigger { cursor: pointer; outline: none; -webkit-tap-highlight-color: transparent; }
+.weSpinTrigger .weHalo {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: wePulse 1.6s ease-in-out infinite;
+}
+.weSpinTrigger:hover .weBtn,
+.weSpinTrigger:focus-visible .weBtn { fill: var(--aza-rust-light); }
+.weSpinTrigger:focus-visible .weHalo { stroke: var(--aza-rust); stroke-width: 2; }
+.is-spinning .weSpinTrigger { cursor: default; }
+.is-spinning .weHalo { animation: none; }
+.wePointer .wePointerInner { transform-box: view-box; }
+.slice.is-winner path { animation: weWinFlash 0.5s ease-in-out 3; }
+
+@keyframes wePulse {
+    0%, 100% { transform: scale(1); opacity: 0.85; }
+    50%      { transform: scale(1.12); opacity: 0.55; }
+}
+@keyframes weWinFlash {
+    50% { filter: brightness(1.12) saturate(1.15); }
+}
+
+/* ---------- Result screens ---------- */
+.weWinCont, .welostCont {
+    display: none;
+    width: 100%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    row-gap: 36px;
+}
+.weBlock {
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    row-gap: 14px;
+    width: 100%;
+    max-width: 340px;
+}
+
+.weEyebrow {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--aza-rust);
+}
+#prize {
+    display: block;
+    margin-top: 4px;
+    font-size: 30px;
+    font-weight: 800;
+    color: var(--aza-rust);
+}
+.weArt { width: 132px; height: auto; display: block; }
+
+/* Coupon ticket */
+code {
+    position: relative;
+    isolation: isolate;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 14px;
+    width: 100%;
+    padding: 20px 28px;
+}
+code::after { /* ticket body with side notches */
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    border-radius: 12px;
+    background: linear-gradient(90deg, var(--aza-rust-light), var(--aza-rust));
+    -webkit-mask: radial-gradient(circle 13px at 0 50%, transparent 97%, #000 100%) left / 51% 100% no-repeat,
+                  radial-gradient(circle 13px at 100% 50%, transparent 97%, #000 100%) right / 51% 100% no-repeat;
+            mask: radial-gradient(circle 13px at 0 50%, transparent 97%, #000 100%) left / 51% 100% no-repeat,
+                  radial-gradient(circle 13px at 100% 50%, transparent 97%, #000 100%) right / 51% 100% no-repeat;
+}
+code::before { /* inner dashed perforation */
+    content: "";
+    position: absolute;
+    inset: 7px 22px;
+    z-index: -1;
+    border: 1.5px dashed rgba(255, 255, 255, 0.55);
+    border-radius: 6px;
+}
+code > p {
+    color: #ffffff;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    word-break: break-all;
+}
+code img { width: 26px; cursor: pointer; flex: none; }
+code > span { /* "copied" toast - toggled by copyCode() */
+    display: none;
+    position: absolute;
+    left: 50%;
+    bottom: -34px;
+    transform: translateX(-50%);
+    padding: 4px 12px;
+    border-radius: 999px;
+    background: var(--aza-ink);
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 600;
+}
+code + p { font-size: 13px; color: var(--aza-hint); text-align: center; }
+
+/* Lost art */
+.weLostArt { position: relative; width: 210px; display: flex; justify-content: center; }
+.weLostArt::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: 6px;
+    width: 190px;
+    height: 190px;
+    transform: translateX(-50%);
+    border-radius: 50%;
+    background: radial-gradient(circle at 50% 40%, var(--aza-blush), var(--aza-peach));
+}
+.weLostArt img { position: relative; width: 190px; height: auto; }
+
+/* Buttons */
+button.respin-button,
+a.continue-shopping {
+    width: 240px;
+    height: 48px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    border-radius: 999px;
+    font-size: 16px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+    -webkit-tap-highlight-color: transparent;
+}
+button.respin-button {
+    border: none;
+    background: var(--aza-rust);
+    color: #ffffff;
+    box-shadow: 0 6px 16px rgba(185, 59, 28, 0.28);
+}
+button.respin-button:hover { background: var(--aza-rust-light); }
+a.continue-shopping {
+    border: 1.5px solid var(--aza-rust);
+    background: #ffffff;
+    color: var(--aza-rust);
+}
+a.continue-shopping:hover { background: var(--aza-blush); }
+button.respin-button:active, a.continue-shopping:active { transform: scale(0.98); }
+button.respin-button svg { width: 18px; height: 18px; }
+
+/* ---------- Screen switching (same class names as WebEngage template) ---------- */
+.hide { display: none !important; }
+.show { animation: weFadeIn 0.5s ease forwards; }
+.weWinCont.show, .welostCont.show { display: flex; }
+
+@keyframes weFadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: none; }
+}
+
+/* ---------- Short landscape screens (phones on their side) ---------- */
+@media (orientation: landscape) and (max-height: 520px) {
+    dialog.main { padding: 12px 24px; }
+    .spinContainer {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        grid-template-rows: 1fr auto auto 1fr;
+        column-gap: 32px;
+        row-gap: 6px;
+        max-width: 760px;
+        align-items: center;
+    }
+    .spinContainer > h2 { grid-column: 1; grid-row: 2; }
+    .spinContainer > h4 { grid-column: 1; grid-row: 3; justify-self: center; }
+    .spinContainer > .weHint { grid-column: 1; grid-row: 4; align-self: start; }
+    #weSpinWheel { grid-column: 2; grid-row: 1 / -1; width: min(84vh, 360px); }
+    .weWinCont.show, .welostCont.show { flex-direction: row; column-gap: 40px; }
+    .weArt { width: 96px; }
+    .weLostArt { width: 160px; }
+    .weLostArt::before { width: 140px; height: 140px; }
+    .weLostArt img { width: 140px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .weSpinTrigger .weHalo, .slice.is-winner path { animation: none; }
+    .show { animation: none; }
+}
